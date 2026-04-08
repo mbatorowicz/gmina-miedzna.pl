@@ -20,6 +20,18 @@
   --color-wcag-bg: #ffffff;
   --color-wcag-text: #000000;
   --color-wcag-focus: #fca311;
+
+  /* Poboczne tony neutralne CSS SSOT (Dla tła, krawędzi, podświetleń) */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --bg-overlay: rgba(15, 23, 42, 0.95);
   
   --font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
   
