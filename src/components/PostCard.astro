@@ -40,7 +40,7 @@ const { title, date, author = "admin", category, imageUrl, url = "#" } = Astro.p
     overflow: hidden;
     /* Aspect ratio ok 16:9 dla miniatur */
     aspect-ratio: 16 / 10;
-    background-color: #f1f5f9;
+    background-color: var(--color-wcag-bg);
   }
 
   .post-image {
@@ -59,7 +59,7 @@ const { title, date, author = "admin", category, imageUrl, url = "#" } = Astro.p
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    background: white;
+    background: var(--color-bg-card);
   }
 
   .post-title {

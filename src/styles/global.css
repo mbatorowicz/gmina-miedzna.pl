@@ -88,11 +88,6 @@
   color: #ffff00;
 }
 
-[data-theme="high-contrast"] * {
-  border-color: #ffff00 !important;
-  outline-color: #ffff00 !important;
-}
-
 [data-theme="high-contrast"] a, [data-theme="high-contrast"] h1, [data-theme="high-contrast"] h2, [data-theme="high-contrast"] h3 {
   color: #ffff00 !important;
 }

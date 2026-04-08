@@ -41,7 +41,7 @@ const sortedNews = allNews.sort((a, b) => new Date(b.data.date).valueOf() - new 
             )
           })
         ) : (
-          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: white; border-radius: 8px;">
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--color-bg-card); border-radius: 8px;">
             <p style="color: var(--color-slate-500); font-size: 1.1rem;">Brak komunikatów do wyświetlenia.</p>
           </div>
         )}
