@@ -187,6 +187,11 @@ import { mainNavigation as menuItems } from '../config/navigation';
     background: var(--color-primary-light); /* Lżejszy niebieski po najechaniu */
   }
 
+  :global([data-theme="high-contrast"]) .nav-link:hover,
+  :global([data-theme="high-contrast"]) .nav-item:focus-within > .nav-link {
+    color: #000000;
+  }
+
   .arrow-down, .arrow-right {
     font-size: 0.75rem;
     opacity: 0.8;
