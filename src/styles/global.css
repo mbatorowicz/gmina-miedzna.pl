@@ -43,7 +43,7 @@
   --font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
 
   /* Układ */
-  --max-width: 1440px;
+  --max-width: 1150px;
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
@@ -112,8 +112,8 @@
 
 /* Skalowanie czcionek (WCAG) */
 html {
-  font-size: 90%; 
-  /* Zmniejszenie z 100% (~16px) na 90% (~14.4px) imitujące oddalenie strony */
+  font-size: 85%; 
+  /* Zmniejszenie z 100% (~16px) na 85% (~13.6px) imitujące silne oddalenie strony */
 }
 html[data-fontsize="large"] {
   font-size: 100%;
