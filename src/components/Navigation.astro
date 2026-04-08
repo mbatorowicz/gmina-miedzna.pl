@@ -255,11 +255,13 @@ import { mainNavigation as menuItems } from '../config/navigation';
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1.25rem;
+    padding: 0.6rem 1.25rem;
     color: var(--color-slate-700);
     text-decoration: none;
-    font-size: 1rem;
-    transition: background 0.2s;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: background 0.2s, color 0.2s;
   }
 
   /* Kategoria grupująca np. Samorząd, Jednostki - wymuszone duże litery i mniejszy font z CSS */
@@ -316,15 +318,18 @@ import { mainNavigation as menuItems } from '../config/navigation';
 
   .submenu-link {
     display: block;
-    padding: 0.75rem 1.25rem;
-    color: var(--color-slate-600);
+    padding: 0.6rem 1.25rem;
+    color: var(--color-slate-700);
     font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
     text-decoration: none;
     border-bottom: 1px solid rgba(0,0,0,0.03);
+    transition: background 0.2s, color 0.2s;
   }
 
   .submenu-link:hover {
-    background: var(--color-slate-200);
+    background: var(--color-slate-100);
     color: var(--color-primary);
   }
 
@@ -354,7 +359,6 @@ import { mainNavigation as menuItems } from '../config/navigation';
     margin: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Dwie równe Kolumny zgodne z załączonym projektem graficznym */
-    gap: x;
     column-gap: 3rem;
   }
 
@@ -364,12 +368,13 @@ import { mainNavigation as menuItems } from '../config/navigation';
 
   .mega-link {
     display: block;
-    padding: 0.75rem 0.5rem;
+    padding: 0.6rem 0.5rem;
     color: var(--color-slate-700);
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
     text-decoration: none;
     line-height: 1.4;
-    transition: color 0.1s, background-color 0.1s;
+    transition: color 0.2s, background-color 0.2s;
     border-radius: 4px;
   }
 
