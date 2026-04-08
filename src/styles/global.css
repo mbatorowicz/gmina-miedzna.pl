@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Kolory urzędowe, profesjonalne */
+  --color-primary: #1e4b85; /* Głęboki, urzędowy granat/niebieski */
+  --color-primary-light: #2c63a5;
+  --color-primary-dark: #123058;
+  
+  --color-secondary: #fca311; /* Akcentujący żółty/pomarańczowy, dla kontrastu i istotnych guzików */
+  
+  --color-text: #333333;
+  --color-text-light: #666666;
+  
+  --color-bg: #f8f9fa;
+  --color-bg-card: #ffffff;
+  
+  --color-border: #e2e8f0;
+
+  /* Dostępność (WCAG) */
+  --color-wcag-bg: #ffffff;
+  --color-wcag-text: #000000;
+  --color-wcag-focus: #fca311;
+  
+  --font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Układ */
+  --max-width: 1200px;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  
+  --transition: all 0.2s ease-in-out;
+}
+
+/* Wersja wysokiego kontrastu (WCAG) włączana przez klasę na body */
+body.high-contrast {
+  --color-primary: #FFFF00;
+  --color-primary-light: #FFFF00;
+  --color-primary-dark: #000000;
+  --color-secondary: #FFFF00;
+  --color-text: #FFFF00;
+  --color-text-light: #FFFF00;
+  --color-bg: #000000;
+  --color-bg-card: #000000;
+  --color-border: #FFFF00;
+  
+  background-color: #000000;
+  color: #FFFF00;
+}
+
+body.high-contrast * {
+  border-color: #FFFF00 !important;
+}
+
+body.high-contrast img {
+  filter: grayscale(100%) contrast(120%);
+}
+
+/* Reset bazowy */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--color-primary-light);
+  text-decoration: underline;
+}
+
+/* Skupienie (Focus) - Ważne dla WCAG */
+*:focus-visible {
+  outline: 3px solid var(--color-wcag-focus);
+  outline-offset: 2px;
+}
+
+/* Utylity i układ główny */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-sm);
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg) 0;
+  flex: 1;
+}
+
+@media (min-width: 900px) {
+  .main-layout {
+    flex-direction: row;
+  }
+}
+
+.content-area {
+  flex: 7; /* ~70% szerokości wpisów */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* Siatka "Masonry" na wpisy */
+.news-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 600px) {
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.sidebar-area {
+  flex: 3; /* ~30% szerokości dla widgetów */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Elementy UI */
+.card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.btn:hover {
+  background-color: var(--color-primary-light);
+  color: white;
+  text-decoration: none;
+}

@@ -1,0 +1,148 @@
+---
+// Sidebar.astro - Boczny pasek z widgetami informacyjnymi
+---
+
+<aside class="sidebar-wrapper">
+  
+  <div class="widget widget-alert">
+    <div class="widget-header">
+      <span class="widget-title">Ostrzeżenia meteorologiczne</span>
+    </div>
+    <div class="widget-body">
+      <p class="no-alerts">Brak aktualnych ostrzeżeń</p>
+    </div>
+  </div>
+
+  <div class="widget widget-banner bg-blue">
+    <a href="#" class="banner-link">
+      <img src="https://gmina-miedzna.pl/wp-content/uploads/2022/01/logo-ochrona-ludnosci.png" alt="Ochrona Ludności i Obrona Cywilna" class="banner-img" onerror="this.src='https://placehold.co/300x250/1e4b85/ffffff?text=Ochrona+Ludno%C5%9Bci'" />
+      <span class="sr-only">Dowiedz się jak reagować w sytuacjach zagrożenia</span>
+    </a>
+  </div>
+
+  <div class="widget widget-banner">
+    <a href="#" class="banner-link">
+      <img src="https://gmina-miedzna.pl/wp-content/uploads/2020/09/mazowsze-bez-smogu.png" alt="Mazowsze bez smogu" class="banner-img" onerror="this.src='https://placehold.co/300x100/f8f9fa/1e4b85?text=Mazowsze+bez+smogu'" />
+    </a>
+  </div>
+
+  <div class="widget widget-banner">
+    <a href="#" class="banner-link">
+      <img src="https://gmina-miedzna.pl/wp-content/uploads/2021/03/flaga.jpg" alt="Unia Europejska" class="banner-img" onerror="this.src='https://placehold.co/300x120/f8f9fa/1e4b85?text=Unia+Europejska'" />
+    </a>
+  </div>
+  
+  <div class="widget widget-banner">
+    <a href="#" class="banner-link text-banner">
+      <div class="text-banner-content">
+        <h3>Powiadomienia SMS</h3>
+        <span class="btn">Zapisz się</span>
+      </div>
+    </a>
+  </div>
+
+</aside>
+
+<style>
+  .sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .widget {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .widget-header {
+    background: #f8f9fa;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .widget-title {
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+  }
+
+  .widget-body {
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+
+  .no-alerts {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .widget-banner {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .banner-link {
+    display: block;
+    width: 100%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+
+  .banner-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .bg-blue .banner-link {
+    background-color: var(--color-primary-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .text-banner {
+    background-color: #f1f5f9;
+    border: 1px solid var(--color-border);
+    text-align: center;
+    text-decoration: none !important;
+  }
+
+  .text-banner-content {
+    padding: 2rem 1rem;
+  }
+
+  .text-banner h3 {
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+  }
+</style>

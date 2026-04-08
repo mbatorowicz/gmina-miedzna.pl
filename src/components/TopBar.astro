@@ -1,0 +1,121 @@
+---
+// TopBar.astro - Pasek narzędzi dostępności WCAG
+---
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div class="topbar-left">
+      <span>Gmina Miedzna - Oficjalny portal informacyjny</span>
+    </div>
+    <div class="topbar-right wcag-tools">
+      <span class="wcag-label">Kontrast:</span>
+      <button class="wcag-btn" id="contrast-standard" aria-label="Kontrast standardowy" title="Kontrast standardowy">
+        <span class="circle bg-standard"></span>
+      </button>
+      <button class="wcag-btn" id="contrast-yellow-black" aria-label="Zmień kontrast na żółto-czarny" title="Kontrast żółto-czarny">
+        <span class="circle bg-yellow-black"></span>
+      </button>
+      
+      <span class="wcag-separator">|</span>
+      
+      <span class="wcag-label">Czcionka:</span>
+      <button class="wcag-btn font-btn" id="font-increase" aria-label="Powiększ czcionkę" title="Powiększ czcionkę">A+</button>
+      <button class="wcag-btn font-btn" id="font-decrease" aria-label="Pomniejsz czcionkę" title="Pomniejsz czcionkę">A-</button>
+      <button class="wcag-btn font-btn" id="font-reset" aria-label="Zresetuj rozmiar czcionki" title="Zresetuj czcionkę">A</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .topbar {
+    background-color: #f1f5f9;
+    font-size: 0.85rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .topbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .topbar-left {
+    color: var(--color-text-light);
+  }
+
+  .wcag-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .wcag-label {
+    font-weight: 500;
+    margin-right: 0.25rem;
+  }
+
+  .wcag-separator {
+    color: #cbd5e1;
+    margin: 0 0.25rem;
+  }
+
+  .wcag-btn {
+    background: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    border-radius: 4px;
+    transition: var(--transition);
+  }
+
+  .wcag-btn:hover {
+    border-color: #94a3b8;
+    background-color: #e2e8f0;
+  }
+
+  .circle {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #94a3b8;
+  }
+
+  .bg-standard {
+    background: #ffffff;
+  }
+
+  .bg-yellow-black {
+    background: #000000;
+    border-color: #ffff00;
+  }
+
+  .font-btn {
+    font-weight: 700;
+    padding: 2px 6px;
+  }
+
+  /* Logika WCAG JS na później */
+</style>
+
+<script>
+  // Prosty skrypt aktywujący klasę wysokiego kontrastu 
+  const btnYellowBlack = document.getElementById('contrast-yellow-black');
+  const btnStandard = document.getElementById('contrast-standard');
+
+  if (btnYellowBlack && btnStandard) {
+    btnYellowBlack.addEventListener('click', () => {
+      document.body.classList.add('high-contrast');
+    });
+
+    btnStandard.addEventListener('click', () => {
+      document.body.classList.remove('high-contrast');
+    });
+  }
+</script>

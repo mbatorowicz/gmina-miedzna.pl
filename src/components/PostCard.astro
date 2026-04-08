@@ -1,0 +1,92 @@
+---
+// PostCard.astro - Komponent wyświetlający kafel wpisu (np. aktualności)
+export interface Props {
+  title: string;
+  date: string;
+  author?: string;
+  category: string;
+  imageUrl?: string;
+  url?: string;
+}
+
+const { title, date, author = "admin", category, imageUrl, url = "#" } = Astro.props;
+---
+
+<article class="card post-card">
+  {imageUrl && (
+    <a href={url} class="post-image-link">
+      <img src={imageUrl} alt={title} class="post-image" />
+    </a>
+  )}
+  <div class="post-content">
+    <h2 class="post-title">
+      <a href={url}>{title}</a>
+    </h2>
+    <div class="post-meta">
+      Opublikowano <time datetime={date}>{date}</time> przez <span class="author">{author}</span> w <a href="#" class="category">{category}</a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .post-image-link {
+    display: block;
+    overflow: hidden;
+    /* Aspect ratio ok 16:9 dla miniatur */
+    aspect-ratio: 16 / 10;
+    background-color: #f1f5f9;
+  }
+
+  .post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .post-card:hover .post-image {
+    transform: scale(1.05);
+  }
+
+  .post-content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background: white;
+  }
+
+  .post-title {
+    font-size: 1.15rem;
+    line-height: 1.4;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-title a {
+    color: var(--color-text);
+  }
+
+  .post-title a:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .post-meta {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    /* Wypycha meta na dół, jeśli tytuł jest krótki */
+    margin-top: auto;
+  }
+
+  .post-meta a.category {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+</style>

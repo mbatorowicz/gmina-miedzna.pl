@@ -1,11 +1,56 @@
 ---
-import Welcome from '../components/Welcome.astro';
+// index.astro
 import Layout from '../layouts/Layout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import PostCard from '../components/PostCard.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Przykładowe dane mokujące wygląd aktualności
+const mockPosts = [
+  {
+    title: "Życzenia Świąteczne",
+    date: "30 marca, 2026",
+    category: "Ogólne",
+    imageUrl: "https://gmina-miedzna.pl/wp-content/uploads/2024/03/zyczenia-wielkanocne-2024-r...-768x544.jpg"
+  },
+  {
+    title: "Ruszył nabór na bezpłatne audyty energetyczne i/lub przeglądy kominiarskie w Gminie Miedzna!",
+    date: "30 marca, 2026",
+    category: "Mazowsze bez smogu",
+    imageUrl: "https://gmina-miedzna.pl/wp-content/uploads/2024/03/Baner_BIP_1200x600_v1-768x384.png"
+  },
+  {
+    title: "Zbiórka elektrośmieci",
+    date: "16 marca, 2026",
+    category: "czystość i porządek",
+    imageUrl: "https://gmina-miedzna.pl/wp-content/uploads/2024/03/miedzna-zbiorka-elektrosmieci-2024..-v2-719x1024.jpg"
+  },
+  {
+    title: "Wójt Gminy Miedzna ogłasza I przetarg nieograniczony pisemny na sprzedaż samochodu pożarniczego...",
+    date: "12 marca, 2026",
+    category: "Ogólne",
+    imageUrl: "https://gmina-miedzna.pl/wp-content/uploads/2024/03/Ogloszenie-1024x680.jpg"
+  }
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Strona Główna">
+  <div class="container main-layout">
+    
+    <section class="content-area">
+      <!-- Grid z aktualnościami -->
+      <div class="news-grid">
+        {mockPosts.map(post => (
+          <PostCard 
+            title={post.title}
+            date={post.date}
+            category={post.category}
+            imageUrl={post.imageUrl}
+          />
+        ))}
+      </div>
+    </section>
+    
+    <Sidebar />
+
+  </div>
 </Layout>
