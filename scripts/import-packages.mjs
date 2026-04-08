@@ -17,11 +17,9 @@ const files = fs.readdirSync(INBOX_DIR);
 const zipFiles = files.filter(f => f.startsWith('PACZKA_') && f.endsWith('.zip'));
 
 if (zipFiles.length === 0) {
-  console.log('Nie znaleziono nowych paczek ZIP do przetworzenia w public/uploads/');
-  process.exit(0);
-}
-
-console.log(`Znaleziono ${zipFiles.length} paczek do przetworzenia w Inboxie.`);
+  console.log('Nie znaleziono nowych paczek ZIP (Wpisy) do przetworzenia w public/uploads/');
+} else {
+  console.log(`Znaleziono ${zipFiles.length} paczek do przetworzenia w Inboxie.`);
 
 for (const zipFile of zipFiles) {
   const zipPath = path.join(INBOX_DIR, zipFile);
@@ -127,5 +125,75 @@ ${finalContent}
     console.error(`❌ Błąd przetwarzania ${zipFile}:`, error);
   }
 }
+} // Koniec bloku else
 
-console.log('Zakończono import paczek.');
+// --- SEKCJA OSTRZEŻEŃ METEOROLOGICZNYCH ---
+console.log('');
+console.log('Sprawdzanie ostrzeżeń meteorologicznych w PDF...');
+
+const pdfFiles = files.filter(f => f.startsWith('MZW_STAN_') && f.endsWith('.pdf'));
+
+if (pdfFiles.length > 0) {
+  pdfFiles.sort((a, b) => b.localeCompare(a));
+  const latestPdf = pdfFiles[0];
+  
+  console.log(`Zaleziono ${pdfFiles.length} ostrzeżeń. Najnowsze to: ${latestPdf}`);
+  
+  try {
+    const { createRequire } = await import('module');
+    const require = createRequire(import.meta.url);
+    const pdfParse = require('pdf-parse');
+    
+    const pdfBuffer = fs.readFileSync(path.join(INBOX_DIR, latestPdf));
+    const data = await pdfParse(pdfBuffer);
+    
+    const warningsList = [];
+    const parts = data.text.split("Zjawisko/Stopień zagrożenia");
+    
+    for (let i = 1; i < parts.length; i++) {
+        const part = parts[i];
+        let threat = "";
+        let validity = "";
+        let area = "";
+        
+        const startOfRest = part.indexOf("Obszar");
+        if (startOfRest !== -1) {
+            threat = part.substring(0, startOfRest).trim().split('\n')[0];
+        } else {
+            threat = part.substring(0, 100).trim().split('\n')[0] + "...";
+        }
+        
+        const areaMatch = part.match(/powiaty:\s*([\s\S]*?)(?=Ważność)/);
+        if (areaMatch) {
+            area = areaMatch[1].replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+        
+        const waznoscIndex = part.indexOf("Ważność");
+        const prawdIndex = part.indexOf("Prawdopodobieństwo");
+        if (waznoscIndex !== -1 && prawdIndex !== -1) {
+            validity = part.substring(waznoscIndex + 7, prawdIndex).trim().replace(/\n/g, ' ');
+        } else if (waznoscIndex !== -1) {
+            const prefixEnd = part.substring(waznoscIndex + 7);
+            validity = prefixEnd.substring(0, Math.min(prefixEnd.length, 100)).trim().replace(/\n/g, ' ');
+        }
+        
+        if (threat) {
+            warningsList.push({ threat, validity, area });
+        }
+    }
+    
+    const dataDir = path.join(ROOT_DIR, 'src', 'data');
+    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+    
+    fs.writeFileSync(
+        path.join(dataDir, 'latest-warning.json'),
+        JSON.stringify({ file: latestPdf, warningsList }, null, 2)
+    );
+    console.log(`Pomyślnie zdekodowano tabelę z PDF dla: ${latestPdf}. Wyodrębniono ${warningsList.length} stref zagrożeń.`);
+
+  } catch (err) {
+    console.error('Błąd podczas parsowania ostrzeżeń PDF:', err);
+  }
+}
+
+console.log('Zakończono import paczek oraz skanowanie public/uploads.');

@@ -16,49 +16,20 @@ try {
       pdfs.sort((a, b) => b.localeCompare(a));
       const latestFile = pdfs[0];
 
-      // Formatowanie daty: MZW_STAN_20260119105708608
       const match = latestFile.match(/MZW_STAN_(\d{4})(\d{2})(\d{2})/);
       latestWarning = {
         file: latestFile,
         date: match ? `${match[3]}.${match[2]}.${match[1]}` : "Aktualne"
       };
 
-      try {
-        const pdfParseModule = await import('pdf-parse');
-        const pdfParse = pdfParseModule.default || pdfParseModule;
-        const dataBuffer = fs.readFileSync(path.join(uploadDir, latestWarning.file));
-        const data = await pdfParse(dataBuffer);
-        
-        const textStr = data.text;
-        const parts = textStr.split("Zjawisko/Stopień zagrożenia");
-        
-        for (let i = 1; i < parts.length; i++) {
-          const part = parts[i];
-          let threat = "";
-          let validity = "";
-          
-          const obszarIndex = part.indexOf("Obszar");
-          if (obszarIndex !== -1) {
-            threat = part.substring(0, obszarIndex).trim();
-          } else {
-            threat = part.substring(0, 100).trim() + "...";
-          }
-          
-          const waznoscIndex = part.indexOf("Ważność");
-          const prawdIndex = part.indexOf("Prawdopodobieństwo");
-          if (waznoscIndex !== -1 && prawdIndex !== -1) {
-             validity = part.substring(waznoscIndex + 7, prawdIndex).trim();
-          } else if (waznoscIndex !== -1) {
-             const prefixEnd = part.substring(waznoscIndex + 7);
-             validity = prefixEnd.substring(0, Math.min(prefixEnd.length, 100)).trim();
-          }
-          
-          if (threat) {
-             warningsList.push({ threat, validity });
-          }
-        }
-      } catch (e) {
-        console.warn("[Sidebar] PDF text extraction bypass, showing UI box fallback only.");
+      // Wczytaj z czystego SSOT JSONa:
+      const dataFilePath = path.join(process.cwd(), 'src', 'data', 'latest-warning.json');
+      if (fs.existsSync(dataFilePath)) {
+         const dataFile = fs.readFileSync(dataFilePath, 'utf8');
+         const parsed = JSON.parse(dataFile);
+         if (parsed && parsed.file === latestFile && parsed.warningsList) {
+             warningsList = parsed.warningsList;
+         }
       }
     }
   }
@@ -217,6 +188,13 @@ try {
     color: #991b1b;
     font-size: 0.95rem;
     line-height: 1.3;
+  }
+  
+  .warning-area {
+    font-size: 0.85rem;
+    color: #b91c1c;
+    margin-top: 0.2rem;
+    font-style: italic;
   }
   
   .warning-validity {
