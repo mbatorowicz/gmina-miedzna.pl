@@ -1,0 +1,138 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Sidebar from '../components/Sidebar.astro';
+---
+
+<Layout title="Kontakt - Gmina Miedzna">
+  <div class="container main-layout">
+    
+    <section class="content-area">
+      <article class="single-post card">
+        <div class="post-header">
+           <span class="category-badge">Informacje</span>
+           <h1 class="post-title">Kontakt z Urzędem</h1>
+        </div>
+        
+        <div class="post-body">
+          <h2>Urząd Gminy w Miedznie</h2>
+          <p>
+            ul. Węgrowskia 5<br/>
+            07-106 Miedzna
+          </p>
+
+          <div class="contact-box">
+            <h3>Dane kontaktowe</h3>
+            <ul>
+              <li><strong>Telefon:</strong> 123 456 789</li>
+              <li><strong>E-mail:</strong> gmina@gmina-miedzna.pl</li>
+              <li><strong>NIP:</strong> 000-000-00-00</li>
+              <li><strong>REGON:</strong> 000000000</li>
+            </ul>
+          </div>
+
+          <h3>Godziny urzędowania</h3>
+          <table class="hours-table">
+            <tr>
+              <td>Poniedziałek</td>
+              <td>8:00 - 16:00</td>
+            </tr>
+            <tr>
+              <td>Wtorek - Czwartek</td>
+              <td>7:30 - 15:30</td>
+            </tr>
+            <tr>
+              <td>Piątek</td>
+              <td>7:30 - 14:30</td>
+            </tr>
+          </table>
+
+          <h3>Elektroniczna Skrzynka Podawcza (ePUAP)</h3>
+          <p>Adres skrytki ePUAP: <strong>/ugmiedzna/skrytka</strong></p>
+        </div>
+      </article>
+    </section>
+    
+    <Sidebar />
+
+  </div>
+</Layout>
+
+<style>
+  .single-post {
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .post-header {
+    padding: 2rem 2rem 1.5rem;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .category-badge {
+    display: inline-block;
+    background: var(--color-primary-light);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  
+  .post-title {
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .post-body {
+    padding: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #1e293b;
+  }
+
+  .contact-box {
+    background-color: #f1f5f9;
+    border-left: 4px solid var(--color-primary);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .contact-box h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+
+  .contact-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .contact-box li {
+    margin-bottom: 0.5rem;
+  }
+
+  .hours-table {
+    width: 100%;
+    max-width: 400px;
+    border-collapse: collapse;
+    margin: 1rem 0 2rem;
+  }
+
+  .hours-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .hours-table td:first-child {
+    font-weight: 600;
+    color: var(--color-text);
+    width: 60%;
+  }
+</style>

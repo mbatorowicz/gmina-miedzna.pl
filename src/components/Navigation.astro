@@ -1,0 +1,506 @@
+---
+// src/components/Navigation.astro
+const menuItems = [
+  {
+    label: "Gmina",
+    children: [
+      { label: "Plan Ogólny Gminy Miedzna", href: "/gmina/plan-ogolny" },
+      { 
+        label: "JEDNOSTKI ORGANIZACYJNE",
+        children: [
+          { label: "Szkoła Podstawowa im. Tadeusza Kościuszki w Miedznie", href: "/gmina/szkola" },
+          { label: "Gminny Ośrodek Pomocy Społecznej w Miedznie", href: "/gmina/gops" },
+          { label: "Gminne Przedszkole w Miedznie", href: "/gmina/przedszkole" },
+          { label: "Gminna Biblioteka Publiczna w Miedznie", href: "/gmina/biblioteka" },
+        ]
+      },
+      { 
+        label: "WŁADZE GMINY", 
+        children: [
+           { label: "Wójt Gminy", href: "/gmina/wojt" },
+           { label: "Rada Gminy", href: "/gmina/rada" },
+        ]
+      },
+      { label: "Zarządzenia", href: "/gmina/zarzadzenia" },
+      { 
+        label: "SAMORZĄD", 
+        children: [
+          { label: "Uchwały", href: "/gmina/uchwaly" },
+          { label: "Raport o stanie Gminy", href: "/gmina/raport" }
+        ]
+      },
+      { label: "Deklaracja dostępności", href: "/gmina/deklaracja-dostepnosci" },
+      { label: "Sesje Rady Gminy", href: "/gmina/sesje" },
+      { 
+        label: "PLIKI DO POBRANIA", 
+        children: [
+          { label: "Wnioski i druki", href: "/gmina/druki" }
+        ]
+      },
+      { label: "Sołectwa", href: "/gmina/solectwa" },
+      { label: "Inwestycje", href: "/gmina/inwestycje" },
+      { label: "Struktura Urzędu Gminy", href: "/gmina/struktura" },
+      { 
+        label: "RODO", 
+        children: [
+           { label: "Klauzula informacyjna", href: "/gmina/klauzula-rodo" }
+        ]
+      },
+      { label: "Powiadomienia SMS", href: "/gmina/sms" },
+    ]
+  },
+  {
+    label: "Gospodarka odpadami",
+    isMegaMenu: true,
+    children: [
+      { label: "Przedsiębiorca odbierający odpady komunalne z terenu Gminy Miedzna", href: "/odpady/przedsiebiorca" },
+      { label: "Nieczystości ciekłe", href: "/odpady/nieczystosci" },
+      { label: "Informacje o osiągniętych poziomach recyklingu", href: "/odpady/recykling" },
+      { label: "Rejestr działalności regulowanej", href: "/odpady/rejestr" },
+      { label: "Prawo", href: "/odpady/prawo" },
+      { label: "PSZOK", href: "/odpady/pszok" },
+      { label: "Stawki opłat", href: "/odpady/stawki" },
+      { label: "Analiza gospodarki odpadami", href: "/odpady/analiza" },
+      { label: "Harmonogram odbioru odpadów", href: "/odpady/harmonogram" },
+      { label: "Deklaracja o wysokości opłaty za gospodarowanie odpadami komunalnymi", href: "/odpady/deklaracja" },
+      { label: "Informacja o zbierających zużyty sprzęt elektryczny i elektroniczny", href: "/odpady/zuzyty-sprzet" },
+      { label: "Informacja dotycząca odbioru odpadów z działalności rolniczej", href: "/odpady/rolnictwo" },
+    ]
+  },
+  { label: "Kontakt", href: "/kontakt" },
+  { label: "BIP", href: "https://bip.gmina-miedzna.pl/" },
+];
+---
+
+<nav class="main-navigation" aria-label="Nawigacja główna urzędu">
+  
+  <button class="menu-toggle" aria-expanded="false" aria-controls="primary-menu">
+    <span class="hamburger"></span>
+    <span class="sr-only">Rozwiń menu</span>
+  </button>
+
+  <ul class="nav-list" id="primary-menu">
+    {menuItems.map((item, index) => (
+      <li class={`nav-item ${item.children ? 'has-dropdown' : ''} ${item.isMegaMenu ? 'is-mega' : ''}`}>
+        <a 
+          href={item.href || '#'} 
+          class="nav-link" 
+          aria-haspopup={item.children ? 'true' : 'false'}
+          aria-expanded={item.children ? 'false' : undefined}
+          id={`menu-item-${index}`}
+        >
+          {item.label}
+          {item.children && <span class="arrow-down">&#9662;</span>}
+        </a>
+
+        {item.children && (
+          <div class={`dropdown-wrapper ${item.isMegaMenu ? 'mega-menu-wrapper' : ''}`}>
+            {item.isMegaMenu ? (
+              <ul class="mega-menu-list">
+                {item.children.map((subItem) => (
+                  <li class="mega-item">
+                    <a href={subItem.href} class="mega-link">{subItem.label}</a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <ul class="dropdown-list">
+                {item.children.map((subItem) => (
+                  <li class={`dropdown-item ${subItem.children ? 'has-submenu' : ''}`}>
+                    <a href={subItem.href || '#'} class="dropdown-link">
+                      {subItem.label}
+                      {subItem.children && <span class="arrow-right">&#9656;</span>}
+                    </a>
+                    {/* Głębokie podmenu poziomu 3 np. Gmina -> Jednostki -> Szkoła */}
+                    {subItem.children && (
+                      <ul class="submenu-list">
+                        {subItem.children.map((deepItem) => (
+                          <li class="submenu-item">
+                            <a href={deepItem.href} class="submenu-link">{deepItem.label}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+      </li>
+    ))}
+    
+    <!-- Lupa wyrównana do prawej -->
+    <li class="nav-search-item">
+      <button class="search-btn" aria-label="Wyszukaj na stronie">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<script>
+  // Vanilla JS WCAG logic for hover & focus intent
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.querySelector('.menu-toggle');
+    const navList = document.querySelector('.nav-list');
+    const navItemsWithDropdowns = document.querySelectorAll('.has-dropdown');
+
+    // Mobile Toggle
+    if(toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+        toggleBtn.setAttribute('aria-expanded', !expanded);
+        toggleBtn.classList.toggle('active');
+        navList.classList.toggle('active');
+      });
+    }
+
+    // Dropdown Handlers (Keyboard + Click/Touch)
+    navItemsWithDropdowns.forEach(item => {
+      const link = item.querySelector('.nav-link');
+      
+      // Toggle for mobile tapping and keyboard enter/space on top level
+      link.addEventListener('click', (e) => {
+        if(window.innerWidth <= 1024) {
+          e.preventDefault(); // On mobile, parent links just open dropdown
+          const expanded = link.getAttribute('aria-expanded') === 'true';
+          // Close others
+          navItemsWithDropdowns.forEach(i => {
+              i.classList.remove('open');
+              i.querySelector('.nav-link').setAttribute('aria-expanded', 'false');
+          });
+          if(!expanded) {
+            link.setAttribute('aria-expanded', 'true');
+            item.classList.add('open');
+          }
+        }
+      });
+    });
+
+    // Submenu Handlers for touch (Level 3)
+    const hasSubmenus = document.querySelectorAll('.has-submenu');
+    hasSubmenus.forEach(sub => {
+      const subLink = sub.querySelector('.dropdown-link');
+      subLink.addEventListener('click', (e) => {
+         if(window.innerWidth <= 1024) {
+            e.preventDefault();
+            sub.classList.toggle('open');
+         }
+      });
+    });
+
+    // Close on Escape Key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        navItemsWithDropdowns.forEach(item => {
+          item.classList.remove('open');
+          item.querySelector('.nav-link').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // Close on outside click for mobile
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.main-navigation')) {
+        navItemsWithDropdowns.forEach(item => {
+          item.classList.remove('open');
+          item.querySelector('.nav-link').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  .main-navigation {
+    background-color: var(--color-primary); /* Ciemny niebieski urzędowy */
+    color: white;
+    position: relative;
+    z-index: 100;
+  }
+
+  .nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0 1rem;
+    max-width: var(--container-width);
+    margin: 0 auto;
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .nav-item:first-child .nav-link {
+    border-left: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .nav-link:hover, .nav-item:focus-within > .nav-link {
+    background: var(--color-primary-light); /* Lżejszy niebieski po najechaniu */
+  }
+
+  .arrow-down, .arrow-right {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  /* --- Wyszukiwarka (prawa strona) --- */
+  .nav-search-item {
+    margin-left: auto; /* Dopycha do prawej krawędzi */
+    padding: 0 1rem;
+  }
+  .search-btn {
+    background: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.2s;
+  }
+  .search-btn:hover {
+    background: rgba(255,255,255,0.1);
+  }
+
+
+  /* --- ZWYKŁY DROPDOWN (Gmina) --- */
+  .dropdown-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 320px; /* Sztywne szerokie okienko dla dużej ilości tekstu */
+    background: white;
+    color: #1e293b;
+    border-top: 2px solid var(--color-primary-light);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .nav-item:hover > .dropdown-wrapper,
+  .nav-item:focus-within > .dropdown-wrapper,
+  .nav-item.open > .dropdown-wrapper {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dropdown-item {
+    position: relative; /* Przygotowanie pod głębokie podmenu */
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .dropdown-item:last-child { border-bottom: none; }
+
+  .dropdown-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    color: #334155;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+
+  .dropdown-link:hover, .dropdown-item:focus-within > .dropdown-link {
+    background: #f1f5f9;
+    color: var(--color-primary);
+  }
+
+  /* --- PODMENU POZIOM 3 (W bok) --- */
+  .submenu-list {
+    position: absolute;
+    top: 0;
+    left: 100%; /* Pokaż z prawej strony drugiego menu */
+    width: 380px; /* Trochę szersze np. na bardzo długą nazwę szkoły */
+    background: white;
+    border-left: 1px solid rgba(0,0,0,0.1);
+    border-top: 2px solid var(--color-primary-light);
+    box-shadow: 4px 6px 15px rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(10px);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .dropdown-item:hover > .submenu-list,
+  .dropdown-item:focus-within > .submenu-list,
+  .dropdown-item.open > .submenu-list {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  .submenu-link {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    color: #475569;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+  }
+
+  .submenu-link:hover {
+    background: #e2e8f0;
+    color: var(--color-primary);
+  }
+
+
+  /* --- MEGA MENU (Gospodarka Odpadami) --- */
+  .nav-item.is-mega {
+    /* usunięcie position: relative powoduje że okno rozszerzy się do calego kontenera .nav-list,
+       ale łatwiej zrobić position: static i na dziecko the 100% left: 0 */
+    position: static; 
+  }
+  
+  .mega-menu-wrapper {
+    width: 100%;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 2rem;
+  }
+
+  .mega-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dwie równe Kolumny zgodne z załączonym projektem graficznym */
+    gap: x;
+    column-gap: 3rem;
+  }
+
+  .mega-item {
+    /* Opcjonalnie dodatkowe kreski */
+  }
+
+  .mega-link {
+    display: block;
+    padding: 0.75rem 0.5rem;
+    color: #334155;
+    font-size: 1rem;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color 0.1s, background-color 0.1s;
+    border-radius: 4px;
+  }
+
+  .mega-link:hover {
+    background: #f8fafc;
+    color: var(--color-primary);
+  }
+
+
+  /* --- MOBILE HAMBURGER MENU --- */
+  .menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+  }
+
+  .hamburger {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: white;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .hamburger::before, .hamburger::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background: white;
+    transition: all 0.3s;
+  }
+
+  .hamburger::before { top: -8px; left:0; }
+  .hamburger::after { top: 8px; left:0; }
+
+  .menu-toggle.active .hamburger { background: transparent; }
+  .menu-toggle.active .hamburger::before { top: 0; transform: rotate(45deg); }
+  .menu-toggle.active .hamburger::after { top: 0; transform: rotate(-45deg); }
+
+
+  @media (max-width: 1024px) {
+    .menu-toggle { display: block; }
+    
+    .nav-search-item {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      margin: 0;
+    }
+
+    .nav-list {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background: var(--color-primary);
+      padding: 0;
+    }
+
+    .nav-list.active {
+      display: flex;
+    }
+
+    .nav-link { border-left: none !important; border-bottom: 1px solid rgba(255,255,255,0.1); justify-content: space-between; }
+    .nav-item { width: 100%; }
+    
+    /* Wszystkie dropdowny i submenujscia ładują się na pełną szerokość jeden pod drugim */
+    .dropdown-wrapper, .submenu-list {
+      position: static;
+      width: 100%;
+      box-shadow: none;
+      display: none;
+      transform: none;
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      background: #e2e8f0;
+    }
+    
+    .mega-menu-list {
+       grid-template-columns: 1fr;
+    }
+
+    .nav-item.open > .dropdown-wrapper, .dropdown-item.open > .submenu-list {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+</style>

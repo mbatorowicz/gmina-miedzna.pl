@@ -1,5 +1,6 @@
 ---
 // Header.astro - Nagłówek główny i nawigacja
+import Navigation from './Navigation.astro';
 ---
 
 <header class="header">
@@ -11,22 +12,7 @@
     </div>
   </div>
 
-  <nav class="main-nav">
-    <div class="container nav-container">
-      <ul class="nav-list">
-        <li><a href="/" class="nav-item">Gmina</a></li>
-        <li><a href="/odpady" class="nav-item">Gospodarka odpadami</a></li>
-        <li><a href="/kontakt" class="nav-item">Kontakt</a></li>
-        <li><a href="/bip" class="nav-item">BIP</a></li>
-      </ul>
-      
-      <div class="nav-search">
-        <button class="search-btn" aria-label="Szukaj">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </button>
-      </div>
-    </div>
-  </nav>
+  <Navigation />
 </header>
 
 <style>
@@ -86,58 +72,4 @@
     text-transform: uppercase;
   }
 
-  /* Nawigacja */
-  .main-nav {
-    background-color: var(--color-primary);
-    color: white;
-  }
-
-  .nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .nav-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    overflow-x: auto;
-  }
-
-  .nav-item {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 1rem 1.5rem;
-    font-weight: 500;
-    transition: background-color 0.2s;
-  }
-
-  .nav-item:hover, .nav-item:focus {
-    background-color: var(--color-primary-dark);
-    text-decoration: none;
-  }
-
-  .nav-search {
-    padding: 0 1rem;
-  }
-
-  .search-btn {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: background-color 0.2s;
-  }
-
-  .search-btn:hover {
-    background-color: var(--color-primary-dark);
-  }
 </style>
