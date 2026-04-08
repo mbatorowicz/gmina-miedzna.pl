@@ -13,5 +13,9 @@
   },
   "dependencies": {
     "astro": "^6.1.4"
+  },
+  "devDependencies": {
+    "adm-zip": "^0.5.17",
+    "slugify": "^1.6.9"
   }
 }
