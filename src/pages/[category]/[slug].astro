@@ -67,7 +67,83 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('pl-PL', {
     
     <Sidebar />
   </div>
+
+  <!-- Lightbox Modal -->
+  <div id="gallery-lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <button class="lightbox-prev" aria-label="Poprzednie zdjęcie">&#10094;</button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="Powiększone zdjęcie">
+    <button class="lightbox-next" aria-label="Następne zdjęcie">&#10095;</button>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
 </Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const links = document.querySelectorAll('.gallery-item-link');
+    if (links.length === 0) return;
+
+    const lightbox = document.getElementById('gallery-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const prevBtn = document.querySelector('.lightbox-prev');
+    const nextBtn = document.querySelector('.lightbox-next');
+
+    let currentIndex = 0;
+    const images = Array.from(links).map(link => ({
+      href: link.getAttribute('href'),
+      alt: link.querySelector('img').getAttribute('alt')
+    }));
+
+    function openLightbox(index) {
+      currentIndex = index;
+      // Ponieważ img.src w Astro zwraca obiekt podczas developmentu w trybie optymalizacji,
+      // musimy zagwarantować plynne przejscie poprzez wczytanie bazowego src 
+      lightboxImg.src = images[currentIndex].href;
+      lightboxCaption.textContent = images[currentIndex].alt;
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+    }
+
+    function showNext(e) {
+      if(e) e.stopPropagation();
+      currentIndex = (currentIndex + 1) % images.length;
+      openLightbox(currentIndex);
+    }
+
+    function showPrev(e) {
+      if(e) e.stopPropagation();
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      openLightbox(currentIndex);
+    }
+
+    links.forEach((link, idx) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(idx);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target === lightboxImg) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft') showPrev();
+    });
+  });
+</script>
 
 <style>
   .single-post {
@@ -110,16 +186,17 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('pl-PL', {
   
   .post-cover {
     width: 100%;
-    /* Max wysoka żeby nie zasłoniła całkiem widoczności artykułu */
-    max-height: 500px;
-    overflow: hidden;
-    background: #e2e8f0;
+    background: #f8fafc;
+    text-align: center;
   }
   
   .cover-image {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    max-height: 550px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
   }
 
   .post-body {
@@ -191,5 +268,101 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('pl-PL', {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.95); /* Ciemny slate z urzędowej kolorystyki */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .lightbox-img {
+    max-width: 90%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.2s;
+  }
+
+  .lightbox-close:hover {
+    color: var(--color-primary-light);
+  }
+
+  .lightbox-prev, .lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+    backdrop-filter: blur(4px);
+  }
+
+  .lightbox-prev:hover, .lightbox-next:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .lightbox-prev {
+    left: 30px;
+  }
+
+  .lightbox-next {
+    right: 30px;
+  }
+
+  .lightbox-caption {
+    color: #e2e8f0;
+    font-size: 1rem;
+    margin-top: 15px;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .lightbox-prev, .lightbox-next {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+    }
+    .lightbox-prev { left: 10px; }
+    .lightbox-next { right: 10px; }
   }
 </style>
