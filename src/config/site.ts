@@ -19,6 +19,21 @@ export const siteConfig = {
     { name: "Opłaty za odbiór odpadów", number: "63 9221 0000 0039 1111 2000 0100" }
   ],
 
+  invoiceData: {
+    buyer: {
+      title: "NABYWCA",
+      name: "Gmina Miedzna",
+      address: "ul. 11 Listopada 4\n07-106 Miedzna",
+      nip: "824-172-35-14"
+    },
+    recipient: {
+      title: "ODBIORCA",
+      name: "Urząd Gminy w Miedznie",
+      address: "ul. 11 Listopada 4\n07-106 Miedzna",
+      nip: "824-126-13-73"
+    }
+  },
+
   officeHours: [
     { day: "Pracujemy od 7.30 do 15.30", hours: "" }
   ]
