@@ -80,22 +80,23 @@ for (const zipFile of zipFiles) {
     // Podmiana ścieżek do obrazków: media/image.jpg -> ./image.jpg
     const finalContent = cleanContent.replace(/src="media\//g, 'src="./');
 
-    // Znajdź główny obrazek (okładkę postu) - sprawdzamy wszystkie wpisy plików w folderze media/
+    // Znajdź główny obrazek (okładkę postu) i resztę do galerii
     const mediaEntries = zipEntries.filter(e => e.entryName.startsWith('media/') && !e.isDirectory);
-    let coverImage = '';
     
     mediaEntries.forEach(mediaEntry => {
         const mediaFileName = path.basename(mediaEntry.entryName);
         const destPath = path.join(postDir, mediaFileName);
-        
-        // Zapisz obrazek do docelowego folderu
+        // Zapisz każdy obrazek do docelowego folderu
         fs.writeFileSync(destPath, mediaEntry.getData());
-        
-        // Jeśli nie mamy wybranej okładki, bierzemy pierwsze zdjęcie (najczęściej odpowiednie we wpisach)
-        if (!coverImage && (mediaFileName.endsWith('.jpg') || mediaFileName.endsWith('.png') || mediaFileName.endsWith('.jpeg'))) {
-            coverImage = `./${mediaFileName}`;
-        }
     });
+
+    const validImages = mediaEntries
+        .map(e => path.basename(e.entryName))
+        .filter(img => img.match(/\.(jpg|jpeg|png)$/i))
+        .sort(); // Sortowanie alfabetyczne (gwarancja że 01_ wpada na okładkę)
+
+    const coverImage = validImages.length > 0 ? `./${validImages[0]}` : '';
+    const galleryImages = validImages.length > 1 ? validImages.slice(1).map(img => `"./${img}"`) : [];
 
     // Przygotuj format pliku dla systemu Astro (Markdown z Frontmatter)
     const markdownOutput = `---
@@ -105,6 +106,7 @@ author: "${author}"
 category: "${categorySlug}"
 categoryName: "${categoryName}"
 ${coverImage ? `coverImage: "${coverImage}"` : ''}
+${galleryImages.length > 0 ? `galleryImages: [${galleryImages.join(', ')}]` : ''}
 ---
 
 ${finalContent}

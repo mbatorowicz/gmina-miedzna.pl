@@ -11,6 +11,7 @@ const newsCollection = defineCollection({
     category: z.string(),
     categoryName: z.string(),
     coverImage: image().optional(),
+    galleryImages: z.array(image()).optional(),
   }),
 });
 
