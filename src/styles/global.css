@@ -112,8 +112,8 @@
 
 /* Skalowanie czcionek (WCAG) */
 html {
-  font-size: 85%; 
-  /* Zmniejszenie z 100% (~16px) na 85% (~13.6px) imitujące silne oddalenie strony */
+  font-size: 90%; 
+  /* Zmniejszenie z 100% (~16px) na 90% */
 }
 html[data-fontsize="large"] {
   font-size: 100%;
@@ -206,12 +206,6 @@ a:hover {
 @media (min-width: 600px) {
   .news-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1100px) {
-  .news-grid {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
 
