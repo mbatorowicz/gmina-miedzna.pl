@@ -1,7 +1,7 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../../../layouts/Layout.astro';
-import Sidebar from '../../../components/Sidebar.astro';
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Sidebar from '../../components/Sidebar.astro';
 import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
@@ -9,14 +9,14 @@ export async function getStaticPaths() {
   return newsEntries.map(entry => ({
     params: { 
         category: entry.data.category,
-        slug: entry.slug 
+        slug: entry.id || entry.slug 
     },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 
 // Formatowanie daty
 const formattedDate = new Date(entry.data.date).toLocaleDateString('pl-PL', {

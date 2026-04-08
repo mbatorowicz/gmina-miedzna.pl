@@ -1,7 +1,9 @@
 import { z, defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 const newsCollection = defineCollection({
-  type: 'content',
+  // W nowym Astro używamy dedykowanego loadera do odczytu markdownu jako bazy danych
+  loader: glob({ pattern: "**/*.md", base: "./src/content/news" }),
   schema: ({ image }) => z.object({
     title: z.string(),
     date: z.string(),
