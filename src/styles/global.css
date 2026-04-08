@@ -10,6 +10,9 @@
   --color-secondary: #fca311;
   /* Akcentujący żółty/pomarańczowy, dla kontrastu i istotnych guzików */
 
+  --color-accent: var(--color-primary);
+  --color-accent-dark: var(--color-primary-dark);
+
   --color-text: #333333;
   --color-text-light: #666666;
 
@@ -62,6 +65,8 @@
   --color-primary-light: #ffff00;
   --color-primary-dark: #000000;
   --color-secondary: #000000;
+  --color-accent: #ffff00;
+  --color-accent-dark: #ffff00;
   --color-text: #ffff00;
   --color-text-light: #ffff00;
   --color-bg: #000000;
