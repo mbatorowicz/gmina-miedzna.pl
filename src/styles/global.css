@@ -106,6 +106,10 @@
   filter: grayscale(100%) contrast(120%);
 }
 
+[data-theme="high-contrast"] .logo-img {
+  filter: invert(100%) grayscale(100%) contrast(150%);
+}
+
 /* Skalowanie czcionek (WCAG) */
 html {
   font-size: 100%;
