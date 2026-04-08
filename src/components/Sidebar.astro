@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 let latestWarning = null;
-let warningText = null;
+let warningsList = [];
 
 try {
   const uploadDir = path.join(process.cwd(), 'public', 'uploads');
@@ -30,14 +30,32 @@ try {
         const data = await pdfParse(dataBuffer);
         
         const textStr = data.text;
-        const threatMatch = textStr.match(/Zjawisko\/Stopień zagrożenia\s*([^\n]+)/);
-        const validityMatch = textStr.match(/Ważność\s*([^\n]+)/);
-
-        if (threatMatch) {
-          warningText = {
-            threat: threatMatch[1].trim(),
-            validity: validityMatch ? validityMatch[1].trim() : ""
-          };
+        const parts = textStr.split("Zjawisko/Stopień zagrożenia");
+        
+        for (let i = 1; i < parts.length; i++) {
+          const part = parts[i];
+          let threat = "";
+          let validity = "";
+          
+          const obszarIndex = part.indexOf("Obszar");
+          if (obszarIndex !== -1) {
+            threat = part.substring(0, obszarIndex).trim();
+          } else {
+            threat = part.substring(0, 100).trim() + "...";
+          }
+          
+          const waznoscIndex = part.indexOf("Ważność");
+          const prawdIndex = part.indexOf("Prawdopodobieństwo");
+          if (waznoscIndex !== -1 && prawdIndex !== -1) {
+             validity = part.substring(waznoscIndex + 7, prawdIndex).trim();
+          } else if (waznoscIndex !== -1) {
+             const prefixEnd = part.substring(waznoscIndex + 7);
+             validity = prefixEnd.substring(0, Math.min(prefixEnd.length, 100)).trim();
+          }
+          
+          if (threat) {
+             warningsList.push({ threat, validity });
+          }
         }
       } catch (e) {
         console.warn("[Sidebar] PDF text extraction bypass, showing UI box fallback only.");
@@ -62,16 +80,19 @@ try {
           <div class="warning-details">
             <span class="warning-date">Data wydania: <strong>{latestWarning.date}</strong></span>
             
-            {warningText && (
-              <div class="warning-extracted">
-                <div class="warning-threat">{warningText.threat}</div>
-                {warningText.validity && <div class="warning-validity">{warningText.validity}</div>}
-              </div>
+            {warningsList.length > 0 ? (
+              warningsList.map(w => (
+                <div class="warning-extracted">
+                  <div class="warning-threat">{w.threat}</div>
+                  {w.validity && <div class="warning-validity">{w.validity}</div>}
+                </div>
+              ))
+            ) : (
+                <div class="warning-extracted">
+                  <div class="warning-threat">Wykryto dokument ostrzegawczy z dnia {latestWarning.date}</div>
+                </div>
             )}
             
-            <a href={`/uploads/${latestWarning.file}`} class="btn btn-warning" target="_blank" rel="noopener noreferrer">
-              Pobierz oryginalny raport
-            </a>
           </div>
         </div>
       ) : (
