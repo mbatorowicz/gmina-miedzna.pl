@@ -4,25 +4,27 @@ import AdmZip from 'adm-zip';
 import slugify from 'slugify';
 
 const ROOT_DIR = process.cwd();
+const INBOX_DIR = path.join(ROOT_DIR, 'public', 'uploads');
 const CONTENT_DIR = path.join(ROOT_DIR, 'src', 'content', 'news');
 const ARCHIVAL_DIR = path.join(ROOT_DIR, 'archived_packages');
 
 // Tworzymy niezbędne foldery jeśli nie istnieją
+if (!fs.existsSync(INBOX_DIR)) fs.mkdirSync(INBOX_DIR, { recursive: true });
 if (!fs.existsSync(CONTENT_DIR)) fs.mkdirSync(CONTENT_DIR, { recursive: true });
 if (!fs.existsSync(ARCHIVAL_DIR)) fs.mkdirSync(ARCHIVAL_DIR, { recursive: true });
 
-const files = fs.readdirSync(ROOT_DIR);
+const files = fs.readdirSync(INBOX_DIR);
 const zipFiles = files.filter(f => f.startsWith('PACZKA_') && f.endsWith('.zip'));
 
 if (zipFiles.length === 0) {
-  console.log('Nie znaleziono nowych paczek ZIP do przetworzenia.');
+  console.log('Nie znaleziono nowych paczek ZIP do przetworzenia w public/uploads/');
   process.exit(0);
 }
 
-console.log(`Znaleziono ${zipFiles.length} paczek do przetworzenia.`);
+console.log(`Znaleziono ${zipFiles.length} paczek do przetworzenia w Inboxie.`);
 
 for (const zipFile of zipFiles) {
-  const zipPath = path.join(ROOT_DIR, zipFile);
+  const zipPath = path.join(INBOX_DIR, zipFile);
   console.log(`Przetwarzanie: ${zipFile}...`);
 
   try {
