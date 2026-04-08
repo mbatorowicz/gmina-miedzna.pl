@@ -153,14 +153,14 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('pl-PL', {
   
   .post-header {
     padding: 2rem 2rem 1.5rem;
-    background: #f8fafc;
+    background: var(--color-slate-50);
     border-bottom: 1px solid var(--color-border);
   }
   
   .category-badge {
     display: inline-block;
     background: var(--color-primary-light);
-    color: white;
+    color: var(--color-text-on-dark);
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.8rem;
@@ -203,7 +203,7 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('pl-PL', {
     padding: 2rem;
     font-size: 1.1rem;
     line-height: 1.7;
-    color: #1e293b;
+    color: var(--color-slate-800);
   }
   
   /* Stylowanie treść wstrzykiwanej (HTML) z Markdowna */
@@ -305,7 +305,7 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('pl-PL', {
     position: absolute;
     top: 20px;
     right: 30px;
-    color: white;
+    color: var(--color-text-on-dark);
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;
@@ -322,7 +322,7 @@ const formattedDate = new Date(entry.data.date).toLocaleDateString('pl-PL', {
     top: 50%;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.1);
-    color: white;
+    color: var(--color-text-on-dark);
     border: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 24px;
     cursor: pointer;
