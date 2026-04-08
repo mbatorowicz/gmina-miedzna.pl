@@ -10,7 +10,8 @@ export const siteConfig = {
     email: "sekretariat@gmina-miedzna.pl",
     nip: "824-126-13-73",
     regon: "000544556",
-    epuap: "/ugmiedzna/skrytka"
+    epuap: "366ap2kaiu",
+    eDoreczenia: "AE:PL-20566-32159-EIVFC-16"
   },
   
   bankAccounts: [
