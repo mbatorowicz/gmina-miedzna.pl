@@ -274,13 +274,18 @@ import { mainNavigation as menuItems } from '../config/navigation';
     color: var(--color-slate-800);
   }
 
-  .dropdown-link:hover, .dropdown-item:focus-within > .dropdown-link {
+  .dropdown-link:hover, 
+  .dropdown-item:hover > .dropdown-link,
+  .dropdown-item:focus-within > .dropdown-link {
     background: var(--color-slate-100);
     color: var(--color-primary);
   }
 
   :global([data-theme="high-contrast"]) .dropdown-link:hover,
-  :global([data-theme="high-contrast"]) .dropdown-item:focus-within > .dropdown-link {
+  :global([data-theme="high-contrast"]) .dropdown-item:hover > .dropdown-link,
+  :global([data-theme="high-contrast"]) .dropdown-item:focus-within > .dropdown-link,
+  :global([data-theme="high-contrast"]) .dropdown-item.has-submenu:hover > .dropdown-link,
+  :global([data-theme="high-contrast"]) .dropdown-item.has-submenu:focus-within > .dropdown-link {
     background: #ffff00;
     color: #000000;
   }
