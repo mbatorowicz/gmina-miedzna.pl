@@ -115,24 +115,28 @@
 
   // Funkcja zmiany motywu
   function setTheme(theme) {
-    if (theme === 'high-contrast') {
-      document.documentElement.setAttribute('data-theme', 'high-contrast');
-      localStorage.setItem('wcag-theme', 'high-contrast');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.removeItem('wcag-theme');
-    }
+    try {
+      if (theme === 'high-contrast') {
+        document.documentElement.setAttribute('data-theme', 'high-contrast');
+        localStorage.setItem('wcag-theme', 'high-contrast');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.removeItem('wcag-theme');
+      }
+    } catch (e) { console.warn("Storage restricted", e); }
   }
 
   // Funkcja zmiany czcionki
   function setFontSize(size) {
-    if (size === 'standard') {
-      document.documentElement.removeAttribute('data-fontsize');
-      localStorage.removeItem('wcag-fontsize');
-    } else {
-      document.documentElement.setAttribute('data-fontsize', size);
-      localStorage.setItem('wcag-fontsize', size);
-    }
+    try {
+      if (size === 'standard') {
+        document.documentElement.removeAttribute('data-fontsize');
+        localStorage.removeItem('wcag-fontsize');
+      } else {
+        document.documentElement.setAttribute('data-fontsize', size);
+        localStorage.setItem('wcag-fontsize', size);
+      }
+    } catch (e) { console.warn("Storage restricted", e); }
   }
 
   // Podpięcie zdarzeń kontrastu
