@@ -15,46 +15,65 @@ import { siteConfig } from '../config/site';
         </div>
         
         <div class="post-body">
-          <h2>Urząd Gminy w Miedznie</h2>
-          <p>
-            {siteConfig.contact.addressLine1}<br/>
-            {siteConfig.contact.addressLine2}
-          </p>
+          <div class="contact-grid">
+            
+            <!-- KARTA 1: Adres i Godziny -->
+            <div class="contact-card">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <h3>Siedziba Urzędu</h3>
+              <p class="address-text">
+                <strong>{siteConfig.name}</strong><br/>
+                {siteConfig.contact.addressLine1}<br/>
+                {siteConfig.contact.addressLine2}
+              </p>
+              <div class="hours-block">
+                <strong>Godziny urzędowania:</strong><br/>
+                <span>{siteConfig.officeHours[0].day}</span>
+              </div>
+            </div>
 
-          <div class="contact-box">
-            <h3>Dane kontaktowe</h3>
-            <ul>
-              {siteConfig.contact.phones.map(phone => (
-                <li><strong>Telefon/fax:</strong> {phone}</li>
-              ))}
-              <li><strong>E-mail:</strong> {siteConfig.contact.email}</li>
-              <li><strong>e-Doręczenia:</strong> {siteConfig.contact.eDoreczenia}</li>
-              <li><strong>NIP:</strong> {siteConfig.contact.nip}</li>
-              <li><strong>REGON:</strong> {siteConfig.contact.regon}</li>
-            </ul>
+            <!-- KARTA 2: Łączność -->
+            <div class="contact-card">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <h3>Dane kontaktowe</h3>
+              <ul class="clean-list">
+                {siteConfig.contact.phones.map(phone => (
+                  <li><strong>Telefon/fax:</strong> {phone}</li>
+                ))}
+                <li><strong>E-mail:</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></li>
+                <li><strong>ePUAP (skrytka):</strong> {siteConfig.contact.epuap}</li>
+                <li><strong>e-Doręczenia:</strong> {siteConfig.contact.eDoreczenia}</li>
+              </ul>
+            </div>
+
+            <!-- KARTA 3: Finanse i Identyfikacja -->
+            <div class="contact-card wide-card">
+              <div class="card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+              </div>
+              <h3>Dane rozliczeniowe gminy</h3>
+              
+              <div class="finance-flex">
+                <div class="finance-ids">
+                  <p><strong>NIP:</strong> {siteConfig.contact.nip}</p>
+                  <p><strong>REGON:</strong> {siteConfig.contact.regon}</p>
+                </div>
+                <div class="finance-accounts">
+                  {siteConfig.bankAccounts.map((account, index) => (
+                    <div class={`bank-item ${index === 1 ? 'bank-secondary' : ''}`}>
+                      <span class="bank-name">{account.name}</span>
+                      <span class="bank-number">{account.number}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
           </div>
-
-          <h3>Numery rachunków bankowych</h3>
-          <ul style="list-style: none; padding: 0; margin-bottom: 2rem;">
-            {siteConfig.bankAccounts.map(account => (
-              <li style="margin-bottom: 0.5rem">
-                <strong>{account.number}</strong> – {account.name}
-              </li>
-            ))}
-          </ul>
-
-          <h3>Godziny urzędowania</h3>
-          <table class="hours-table">
-            {siteConfig.officeHours.map(time => (
-              <tr>
-                <td>{time.day}</td>
-                <td>{time.hours}</td>
-              </tr>
-            ))}
-          </table>
-
-          <h3>Elektroniczna Skrzynka Podawcza (ePUAP)</h3>
-          <p>Adres skrytki ePUAP: <strong>{siteConfig.contact.epuap}</strong></p>
         </div>
       </article>
     </section>
@@ -95,51 +114,168 @@ import { siteConfig } from '../config/site';
   }
 
   .post-body {
-    padding: 2rem;
-    font-size: 1.1rem;
-    line-height: 1.7;
+    padding: 2.5rem 2rem;
     color: var(--color-slate-800);
   }
 
-  .contact-box {
-    background-color: var(--color-slate-100);
-    border-left: 4px solid var(--color-primary);
-    padding: 1.5rem;
-    margin: 2rem 0;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
-  .contact-box h3 {
+  @media (min-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .contact-card {
+    background: var(--color-slate-50);
+    border: 1px solid var(--color-border);
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    border-top: 4px solid var(--color-primary);
+  }
+
+  .wide-card {
+    grid-column: 1 / -1; /* Rozpiętość na dwie kolumny na dużych ekranach */
+  }
+
+  .card-icon {
+    position: absolute;
+    top: -20px;
+    right: 2rem;
+    background: var(--color-primary);
+    color: white;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .contact-card h3 {
     margin-top: 0;
-    margin-bottom: 1rem;
-    color: var(--color-primary);
+    margin-bottom: 1.25rem;
+    font-size: 1.3rem;
+    color: var(--color-primary-dark);
   }
 
-  .contact-box ul {
+  .address-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .hours-block {
+    background: white;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--color-secondary);
+  }
+
+  .clean-list {
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
-  .contact-box li {
-    margin-bottom: 0.5rem;
-  }
-
-  .hours-table {
-    width: 100%;
-    max-width: 400px;
-    border-collapse: collapse;
-    margin: 1rem 0 2rem;
-  }
-
-  .hours-table td {
-    padding: 0.75rem;
+  .clean-list li {
+    padding: 0.75rem 0;
     border-bottom: 1px solid var(--color-slate-200);
+    line-height: 1.5;
+  }
+
+  .clean-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .clean-list li strong {
+    color: var(--color-primary);
+    display: inline-block;
+    min-width: 120px;
+  }
+
+  .clean-list a {
+    color: var(--color-slate-700);
+    text-decoration: none;
+    font-weight: 500;
   }
   
-  .hours-table td:first-child {
+  .clean-list a:hover {
+    color: var(--color-primary);
+  }
+
+  /* Sekcja finansowa */
+  .finance-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .finance-flex {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+    .finance-ids {
+      width: 30%;
+      border-right: 1px solid var(--color-border);
+      padding-right: 2rem;
+    }
+    .finance-accounts {
+      width: 70%;
+      padding-left: 1rem;
+    }
+  }
+
+  .finance-ids p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .finance-ids p strong {
+    color: var(--color-slate-600);
+  }
+
+  .finance-accounts {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .bank-item {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .bank-secondary {
+    border-left: 3px solid var(--color-secondary);
+  }
+
+  .bank-name {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--color-slate-600);
+    margin-bottom: 0.25rem;
     font-weight: 600;
-    color: var(--color-text);
-    width: 60%;
+  }
+
+  .bank-number {
+    font-family: monospace;
+    font-size: 1.25rem;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    word-break: break-all;
   }
 </style>
