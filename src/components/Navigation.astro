@@ -270,6 +270,12 @@ import { mainNavigation as menuItems } from '../config/navigation';
     color: var(--color-primary);
   }
 
+  :global([data-theme="high-contrast"]) .dropdown-link:hover,
+  :global([data-theme="high-contrast"]) .dropdown-item:focus-within > .dropdown-link {
+    background: #ffff00;
+    color: #000000;
+  }
+
   /* --- PODMENU POZIOM 3 (W bok) --- */
   .submenu-list {
     position: absolute;
@@ -309,6 +315,11 @@ import { mainNavigation as menuItems } from '../config/navigation';
   .submenu-link:hover {
     background: var(--color-slate-200);
     color: var(--color-primary);
+  }
+
+  :global([data-theme="high-contrast"]) .submenu-link:hover {
+    background: #ffff00;
+    color: #000000;
   }
 
 
@@ -354,6 +365,11 @@ import { mainNavigation as menuItems } from '../config/navigation';
   .mega-link:hover {
     background: var(--color-slate-50);
     color: var(--color-primary);
+  }
+
+  :global([data-theme="high-contrast"]) .mega-link:hover {
+    background: #ffff00;
+    color: #000000;
   }
 
 
