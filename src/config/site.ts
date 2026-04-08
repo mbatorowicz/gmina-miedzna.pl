@@ -21,13 +21,13 @@ export const siteConfig = {
 
   invoiceData: {
     buyer: {
-      title: "NABYWCA",
+      title: "Nabywca",
       name: "Gmina Miedzna",
       address: "ul. 11 Listopada 4\n07-106 Miedzna",
       nip: "824-172-35-14"
     },
     recipient: {
-      title: "ODBIORCA",
+      title: "Odbiorca",
       name: "Urząd Gminy w Miedznie",
       address: "ul. 11 Listopada 4\n07-106 Miedzna",
       nip: "824-126-13-73"

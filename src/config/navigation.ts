@@ -12,9 +12,9 @@ export const mainNavigation: NavItem[] = [
   {
     label: "Gmina",
     children: [
-      { label: "Plan Ogólny Gminy Miedzna", href: "/gmina/plan-ogolny" },
+      { label: "Plan ogólny Gminy Miedzna", href: "/gmina/plan-ogolny" },
       { 
-        label: "JEDNOSTKI ORGANIZACYJNE",
+        label: "Jednostki organizacyjne",
         children: [
           { label: "Szkoła Podstawowa im. Tadeusza Kościuszki w Miedznie", href: "/gmina/szkola" },
           { label: "Gminny Ośrodek Pomocy Społecznej w Miedznie", href: "/gmina/gops" },
@@ -23,7 +23,7 @@ export const mainNavigation: NavItem[] = [
         ]
       },
       { 
-        label: "WŁADZE GMINY", 
+        label: "Władze Gminy", 
         children: [
            { label: "Wójt Gminy", href: "/gmina/wojt" },
            { label: "Rada Gminy", href: "/gmina/rada" },
@@ -31,7 +31,7 @@ export const mainNavigation: NavItem[] = [
       },
       { label: "Zarządzenia", href: "/gmina/zarzadzenia" },
       { 
-        label: "SAMORZĄD", 
+        label: "Samorząd", 
         children: [
           { label: "Uchwały", href: "/gmina/uchwaly" },
           { label: "Raport o stanie Gminy", href: "/gmina/raport" }
@@ -40,7 +40,7 @@ export const mainNavigation: NavItem[] = [
       { label: "Deklaracja dostępności", href: "/gmina/deklaracja-dostepnosci" },
       { label: "Sesje Rady Gminy", href: "/gmina/sesje" },
       { 
-        label: "PLIKI DO POBRANIA", 
+        label: "Pliki do pobrania", 
         children: [
           { label: "Wnioski i druki", href: "/gmina/druki" }
         ]

@@ -265,6 +265,15 @@ import { mainNavigation as menuItems } from '../config/navigation';
     transition: background 0.2s;
   }
 
+  /* Kategoria grupująca np. Samorząd, Jednostki - wymuszone duże litery i mniejszy font z CSS */
+  .dropdown-item.has-submenu > .dropdown-link {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    color: var(--color-slate-800);
+  }
+
   .dropdown-link:hover, .dropdown-item:focus-within > .dropdown-link {
     background: var(--color-slate-100);
     color: var(--color-primary);
