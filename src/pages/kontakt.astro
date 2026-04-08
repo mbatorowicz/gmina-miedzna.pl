@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Sidebar from '../components/Sidebar.astro';
+import { siteConfig } from '../config/site';
 ---
 
 <Layout title="Kontakt - Gmina Miedzna">
@@ -16,38 +17,44 @@ import Sidebar from '../components/Sidebar.astro';
         <div class="post-body">
           <h2>Urząd Gminy w Miedznie</h2>
           <p>
-            ul. Węgrowskia 5<br/>
-            07-106 Miedzna
+            {siteConfig.contact.addressLine1}<br/>
+            {siteConfig.contact.addressLine2}
           </p>
 
           <div class="contact-box">
             <h3>Dane kontaktowe</h3>
             <ul>
-              <li><strong>Telefon:</strong> 123 456 789</li>
-              <li><strong>E-mail:</strong> gmina@gmina-miedzna.pl</li>
-              <li><strong>NIP:</strong> 000-000-00-00</li>
-              <li><strong>REGON:</strong> 000000000</li>
+              {siteConfig.contact.phones.map(phone => (
+                <li><strong>Telefon/fax:</strong> {phone}</li>
+              ))}
+              <li><strong>E-mail:</strong> {siteConfig.contact.email}</li>
+              <li><strong>e-Doręczenia:</strong> {siteConfig.contact.eDoreczenia}</li>
+              <li><strong>NIP:</strong> {siteConfig.contact.nip}</li>
+              <li><strong>REGON:</strong> {siteConfig.contact.regon}</li>
             </ul>
           </div>
 
+          <h3>Numery rachunków bankowych</h3>
+          <ul style="list-style: none; padding: 0; margin-bottom: 2rem;">
+            {siteConfig.bankAccounts.map(account => (
+              <li style="margin-bottom: 0.5rem">
+                <strong>{account.number}</strong> – {account.name}
+              </li>
+            ))}
+          </ul>
+
           <h3>Godziny urzędowania</h3>
           <table class="hours-table">
-            <tr>
-              <td>Poniedziałek</td>
-              <td>8:00 - 16:00</td>
-            </tr>
-            <tr>
-              <td>Wtorek - Czwartek</td>
-              <td>7:30 - 15:30</td>
-            </tr>
-            <tr>
-              <td>Piątek</td>
-              <td>7:30 - 14:30</td>
-            </tr>
+            {siteConfig.officeHours.map(time => (
+              <tr>
+                <td>{time.day}</td>
+                <td>{time.hours}</td>
+              </tr>
+            ))}
           </table>
 
           <h3>Elektroniczna Skrzynka Podawcza (ePUAP)</h3>
-          <p>Adres skrytki ePUAP: <strong>/ugmiedzna/skrytka</strong></p>
+          <p>Adres skrytki ePUAP: <strong>{siteConfig.contact.epuap}</strong></p>
         </div>
       </article>
     </section>
