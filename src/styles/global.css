@@ -56,28 +56,60 @@
   --transition: all 0.2s ease-in-out;
 }
 
-/* Wersja wysokiego kontrastu (WCAG) włączana przez klasę na body */
-body.high-contrast {
-  --color-primary: #FFFF00;
-  --color-primary-light: #FFFF00;
+/* Wersja wysokiego kontrastu (WCAG) włączana na poziomie root HTML */
+[data-theme="high-contrast"] {
+  --color-primary: #000000;
+  --color-primary-light: #ffff00;
   --color-primary-dark: #000000;
-  --color-secondary: #FFFF00;
-  --color-text: #FFFF00;
-  --color-text-light: #FFFF00;
+  --color-secondary: #000000;
+  --color-text: #ffff00;
+  --color-text-light: #ffff00;
   --color-bg: #000000;
   --color-bg-card: #000000;
-  --color-border: #FFFF00;
-
+  --color-border: #ffff00;
+  --color-slate-50: #000000;
+  --color-slate-100: #000000;
+  --color-slate-200: #000000;
+  --color-slate-300: #ffff00;
+  --color-slate-400: #ffff00;
+  --color-slate-500: #ffff00;
+  --color-slate-600: #ffff00;
+  --color-slate-700: #ffff00;
+  --color-slate-800: #ffff00;
+  --bg-overlay: rgba(0, 0, 0, 0.95);
+  --color-wcag-bg: #000000;
+  --color-wcag-text: #ffff00;
+  --color-wcag-focus: #000000;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  
   background-color: #000000;
-  color: #FFFF00;
+  color: #ffff00;
 }
 
-body.high-contrast * {
-  border-color: #FFFF00 !important;
+[data-theme="high-contrast"] * {
+  border-color: #ffff00 !important;
+  outline-color: #ffff00 !important;
 }
 
-body.high-contrast img {
+[data-theme="high-contrast"] a, [data-theme="high-contrast"] h1, [data-theme="high-contrast"] h2, [data-theme="high-contrast"] h3 {
+  color: #ffff00 !important;
+}
+
+[data-theme="high-contrast"] img {
   filter: grayscale(100%) contrast(120%);
+}
+
+/* Skalowanie czcionek (WCAG) */
+html {
+  font-size: 100%;
+}
+html[data-fontsize="large"] {
+  font-size: 110%;
+}
+html[data-fontsize="xlarge"] {
+  font-size: 120%;
 }
 
 /* Reset bazowy */

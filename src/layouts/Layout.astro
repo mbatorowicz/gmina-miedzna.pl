@@ -24,6 +24,17 @@ const { title } = Astro.props;
     
     <!-- Meta dla SEO -->
     <meta name="description" content={siteConfig.description} />
+
+    <!-- Skrypt WCAG - Ładuje się jako pierwszy, zapobiega zjawisku FOUC (mruganie starego stylu) -->
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem('wcag-theme');
+        if (theme === 'high-contrast') document.documentElement.setAttribute('data-theme', 'high-contrast');
+        
+        const fontSize = localStorage.getItem('wcag-fontsize');
+        if (fontSize) document.documentElement.setAttribute('data-fontsize', fontSize);
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <TopBar />

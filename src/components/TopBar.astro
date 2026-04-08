@@ -105,17 +105,62 @@
 </style>
 
 <script>
-  // Prosty skrypt aktywujący klasę wysokiego kontrastu 
+  // Silnik Dostępności WCAG z pamięcią LocalStorage
   const btnYellowBlack = document.getElementById('contrast-yellow-black');
   const btnStandard = document.getElementById('contrast-standard');
+  const btnFontInc = document.getElementById('font-increase');
+  const btnFontDec = document.getElementById('font-decrease');
+  const btnFontReset = document.getElementById('font-reset');
 
-  if (btnYellowBlack && btnStandard) {
-    btnYellowBlack.addEventListener('click', () => {
-      document.body.classList.add('high-contrast');
-    });
+  // Funkcja zmiany motywu
+  function setTheme(theme) {
+    if (theme === 'high-contrast') {
+      document.documentElement.setAttribute('data-theme', 'high-contrast');
+      localStorage.setItem('wcag-theme', 'high-contrast');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem('wcag-theme');
+    }
+  }
 
-    btnStandard.addEventListener('click', () => {
-      document.body.classList.remove('high-contrast');
+  // Funkcja zmiany czcionki
+  function setFontSize(size) {
+    if (size === 'standard') {
+      document.documentElement.removeAttribute('data-fontsize');
+      localStorage.removeItem('wcag-fontsize');
+    } else {
+      document.documentElement.setAttribute('data-fontsize', size);
+      localStorage.setItem('wcag-fontsize', size);
+    }
+  }
+
+  // Podpięcie zdarzeń kontrastu
+  if (btnYellowBlack) btnYellowBlack.addEventListener('click', () => setTheme('high-contrast'));
+  if (btnStandard) btnStandard.addEventListener('click', () => setTheme('standard'));
+
+  // Pobranie obecnego rozmiaru, by modyfikować skokowo
+  function getCurrentSize() {
+    return document.documentElement.getAttribute('data-fontsize') || 'standard';
+  }
+
+  // Podpięcie zdarzeń czcionki
+  if (btnFontInc) {
+    btnFontInc.addEventListener('click', () => {
+      const current = getCurrentSize();
+      if (current === 'standard') setFontSize('large');
+      else if (current === 'large') setFontSize('xlarge');
     });
+  }
+
+  if (btnFontDec) {
+    btnFontDec.addEventListener('click', () => {
+      const current = getCurrentSize();
+      if (current === 'xlarge') setFontSize('large');
+      else if (current === 'large') setFontSize('standard');
+    });
+  }
+
+  if (btnFontReset) {
+    btnFontReset.addEventListener('click', () => setFontSize('standard'));
   }
 </script>
