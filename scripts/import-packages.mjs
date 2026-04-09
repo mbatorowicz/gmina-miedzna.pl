@@ -65,9 +65,10 @@ for (const zipFile of zipFiles) {
     const categorySlug = slugify(categoryRaw, { lower: true, strict: true });
     const categoryName = categoryRaw.charAt(0).toUpperCase() + categoryRaw.slice(1);
 
-    // Slug dla samego wpisu
-    const slug = slugify(title, { lower: true, strict: true, locale: 'pl' });
-    
+    // Slug dla samego wpisu - dodajemy losowy hash by zablokować nadpisywanie
+    const slugBase = slugify(title, { lower: true, strict: true, locale: 'pl' });
+    const uniqueHash = Math.random().toString(36).substring(2, 7);
+    const slug = `${slugBase}-${uniqueHash}`;
     // Folder docelowy dla danego artykułu (połączony wpis + zdjęcia - technika co-location Astro)
     const postDir = path.join(CONTENT_DIR, slug);
     if (!fs.existsSync(postDir)) {
