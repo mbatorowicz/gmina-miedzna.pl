@@ -1,6 +1,6 @@
 ---
 title: "Time machine"
-date: "2026-04-09T11:23:18.525Z"
+date: "2026-03-31T12:00:00.000Z"
 author: "Michał Batorowicz"
 category: "aktualnosci"
 categoryName: "Aktualności"

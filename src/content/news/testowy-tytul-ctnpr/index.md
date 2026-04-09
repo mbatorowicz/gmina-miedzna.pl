@@ -1,6 +1,6 @@
 ---
 title: "Testowy tytuł"
-date: "2026-04-09T11:24:18.525Z"
+date: "2026-04-01T12:00:00.000Z"
 author: "Michał Batorowicz"
 category: "aktualnosci"
 categoryName: "Aktualności"
