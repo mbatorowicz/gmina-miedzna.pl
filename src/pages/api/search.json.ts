@@ -8,7 +8,8 @@ export async function GET() {
       title: post.data.title,
       slug: `/${post.data.category}/${post.id}`,
       date: new Date(post.data.date).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }),
-      category: post.data.categoryName
+      category: post.data.categoryName,
+      content: post.body ? post.body.replace(/<[^>]*>/g, '').substring(0, 2000) : ''
     };
   });
 

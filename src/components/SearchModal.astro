@@ -152,7 +152,8 @@
     }
 
     const matches = searchIndex.filter(post => 
-      post.title.toLowerCase().includes(q)
+      post.title.toLowerCase().includes(q) || 
+      (post.content && post.content.toLowerCase().includes(q))
     ).slice(0, 15); // max 15 wyników
 
     if(matches.length === 0) {
