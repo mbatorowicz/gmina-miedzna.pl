@@ -1,6 +1,6 @@
 ---
 title: "Informacja"
-date: "2026-03-03T23:00:00.000Z"
+date: "2026-04-09T11:27:18.525Z"
 author: "Michał Batorowicz"
 category: "aktualnosci"
 categoryName: "Aktualności"

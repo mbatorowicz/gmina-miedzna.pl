@@ -51,11 +51,24 @@ for (const zipFile of zipFiles) {
     let date = new Date().toISOString();
     
     if (dateStr) {
-        // Bardzo prosta konwersja "DD.MM.YYYY" do ISO - zakładając format polski z HTML
-        const parts = dateStr.split(',')[0].split('.');
+        // Konwersja "DD.MM.YYYY, HH:MM:SS" do ISO uwzględniająca czas
+        const splitDate = dateStr.split(',');
+        const datePart = splitDate[0].trim();
+        const timePart = splitDate[1] ? splitDate[1].trim() : '00:00:00';
+        
+        const parts = datePart.split('.');
         if (parts.length === 3) {
-            // YYYY-MM-DD
-            date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`).toISOString();
+            // Składamy prawidłową datę wymaganą dla Javascript (YYYY-MM-DDTHH:MM:SS)
+            // Używamy bezpiecznej konwersji + dopisujemy Z dla trzymania standardu jeśli nie podano strefy
+            let isoTime = timePart;
+            if (isoTime.split(':').length === 2) isoTime += ':00';
+            
+            try {
+                date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T${isoTime}+00:00`).toISOString();
+            } catch(e) {
+                // W razie błędu parsowania nietypowej godziny ignoruj godzinę
+                date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`).toISOString();
+            }
         }
     }
 

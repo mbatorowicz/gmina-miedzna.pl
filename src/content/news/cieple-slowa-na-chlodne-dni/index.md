@@ -1,6 +1,6 @@
 ---
 title: "Ciepłe słowa na chłodne dni"
-date: "2026-02-28T00:00:00.000Z"
+date: "2026-04-09T11:28:18.525Z"
 author: "Anna Kiziniewicz"
 category: "aktualnosci"
 categoryName: "Aktualności"
