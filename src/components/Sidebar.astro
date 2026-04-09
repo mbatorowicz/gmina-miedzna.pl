@@ -39,15 +39,17 @@ try {
 <aside class="sidebar-wrapper">
   
   <div class="widget widget-alert">
-    <div class="widget-header">
+    <div class="widget-header" style="display: flex; justify-content: space-between; align-items: center;">
       <span class="widget-title">Ostrzeżenia meteorologiczne</span>
+      {latestWarning && (
+        <div class="warning-icon" style="color: #d97706; margin: 0; display: flex; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+        </div>
+      )}
     </div>
     <div class="widget-body">
       {latestWarning ? (
-        <div class="warning-card">
-          <div class="warning-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
-          </div>
+        <div class="warning-card" style="padding-top: 0;">
           <div class="warning-details">
             <span class="warning-date">Data wydania: <strong>{latestWarning.date}</strong></span>
             
@@ -175,6 +177,7 @@ try {
   .warning-details {
     display: flex;
     flex-direction: column;
+    width: 100%;
     gap: 0.5rem;
   }
 
