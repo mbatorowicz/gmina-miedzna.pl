@@ -1,6 +1,7 @@
 ---
 // src/components/Navigation.astro
 import { mainNavigation as menuItems } from '../config/navigation';
+import SearchModal from './SearchModal.astro';
 ---
 
 <nav class="main-navigation" aria-label="Nawigacja główna urzędu">
@@ -70,12 +71,23 @@ import { mainNavigation as menuItems } from '../config/navigation';
   </ul>
 </nav>
 
+<SearchModal />
+
 <script>
   // Vanilla JS WCAG logic for hover & focus intent
   document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.querySelector('.menu-toggle');
     const navList = document.querySelector('.nav-list');
     const navItemsWithDropdowns = document.querySelectorAll('.has-dropdown');
+    
+    // Wyszukiwarka
+    const searchBtn = document.querySelector('.search-btn');
+    if(searchBtn) {
+      searchBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if(window.openSearchModal) window.openSearchModal();
+      });
+    }
 
     // Mobile Toggle
     if(toggleBtn) {

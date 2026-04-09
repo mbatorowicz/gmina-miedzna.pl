@@ -10,6 +10,7 @@ const newsCollection = defineCollection({
     categoryName: z.string().optional(),
     coverImage: image().optional(),
     galleryImages: z.array(image()).optional(),
+    pinned: z.boolean().default(false).optional(),
   })
 });
 

@@ -9,46 +9,119 @@ import PostCard from '../components/PostCard.astro';
 const allNews = await getCollection('news');
 const sortedNews = allNews.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
 
+// Podział na przypięte i zwykłe (limit 10)
+const pinnedNews = sortedNews.filter(post => post.data.pinned);
+const regularNews = sortedNews.filter(post => !post.data.pinned).slice(0, 10);
+const hasMoreNews = sortedNews.filter(post => !post.data.pinned).length > 10;
+
 ---
 
 <Layout title="Strona Główna">
   <div class="container main-layout">
     
     <section class="content-area">
-      <div class="news-grid">
-        {sortedNews.length > 0 ? (
-          sortedNews.map(post => {
-            // Ścieżka do miniatury z wykorzystaniem wbudowanych funkcji Astro
-            // W Astro Content Collections (relatywne obrazki w fronmatterze) musimy je obsłużyć,
-            // Ale na głównym widoku najprościej pokazać je przez .src w obiekcie, gdy jest zadeklarowane jako image()
-            
-            const coverUrl = post.data.coverImage ? post.data.coverImage.src : undefined;
-            
-            // Formatowanie daty dla widoku publicznego
-            const dateStr = new Date(post.data.date).toLocaleDateString('pl-PL', {
-              day: 'numeric', month: 'long', year: 'numeric'
-            });
+      
+      {pinnedNews.length > 0 && (
+        <div class="pinned-section">
+          <h3 class="section-title"><span class="pin-icon">📌</span> Przypięte informacje</h3>
+          <div class="news-grid pinned-grid">
+            {pinnedNews.map(post => {
+              const coverUrl = post.data.coverImage ? post.data.coverImage.src : undefined;
+              const dateStr = new Date(post.data.date).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+              return (
+                <PostCard 
+                  title={post.data.title} date={dateStr} author={post.data.author} category={post.data.categoryName}
+                  imageUrl={coverUrl} url={`/${post.data.category}/${post.id || post.slug}`}
+                />
+              )
+            })}
+          </div>
+        </div>
+      )}
 
-            return (
-              <PostCard 
-                title={post.data.title}
-                date={dateStr}
-                author={post.data.author}
-                category={post.data.categoryName}
-                imageUrl={coverUrl}
-                url={`/${post.data.category}/${post.id || post.slug}`}
-              />
-            )
-          })
-        ) : (
-          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--color-bg-card); border-radius: 8px;">
-            <p style="color: var(--color-slate-500); font-size: 1.1rem;">Brak komunikatów do wyświetlenia.</p>
+      <div class="regular-section">
+        <h3 class="section-title" style={pinnedNews.length > 0 ? "margin-top: 2rem;" : ""}>Najnowsze wiadomości</h3>
+        <div class="news-grid">
+          {regularNews.length > 0 ? (
+            regularNews.map(post => {
+              const coverUrl = post.data.coverImage ? post.data.coverImage.src : undefined;
+              const dateStr = new Date(post.data.date).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+              return (
+                <PostCard 
+                  title={post.data.title} date={dateStr} author={post.data.author} category={post.data.categoryName}
+                  imageUrl={coverUrl} url={`/${post.data.category}/${post.id || post.slug}`}
+                />
+              )
+            })
+          ) : (
+            <div class="empty-state">
+              <p>Brak komunikatów do wyświetlenia.</p>
+            </div>
+          )}
+        </div>
+        
+        {hasMoreNews && (
+          <div class="load-more-container">
+            <a href="/aktualnosci/strona/2" class="btn btn-outline load-more-btn">ZOBACZ STARSZE WPISY</a>
           </div>
         )}
       </div>
+
     </section>
     
     <Sidebar />
 
   </div>
 </Layout>
+
+<style>
+  .section-title {
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    color: var(--color-slate-800);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+  .pin-icon {
+    font-size: 1.2rem;
+  }
+  .pinned-section {
+    background-color: var(--color-slate-50);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-slate-200);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .empty-state {
+    grid-column: 1 / -1; 
+    text-align: center; 
+    padding: 3rem; 
+    background: var(--color-bg-card); 
+    border-radius: 8px;
+  }
+  .empty-state p {
+    color: var(--color-slate-500); 
+    font-size: 1.1rem;
+  }
+  .load-more-container {
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+  }
+  .load-more-btn {
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    background: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    transition: all 0.3s ease;
+  }
+  .load-more-btn:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 75, 133, 0.2);
+  }
+</style>

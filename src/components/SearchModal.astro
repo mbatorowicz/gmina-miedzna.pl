@@ -1,0 +1,170 @@
+---
+// SearchModal.astro
+---
+<div id="search-modal" class="search-modal-overlay hidden">
+  <div class="search-modal-content">
+    <div class="search-header">
+      <input type="text" id="search-input" placeholder="Wpisz szukaną frazę (np. dotacje, awaria...)" autocomplete="off">
+      <button id="close-search" class="close-btn">&times;</button>
+    </div>
+    <div id="search-results" class="search-results">
+        <div class="search-initial-state">Tutaj pojawią się wyniki wyszukiwania.</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10vh;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  .search-modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .search-modal-content {
+    background: white;
+    width: 90%;
+    max-width: 700px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+  .search-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--color-slate-200);
+    padding: 1rem 1.5rem;
+  }
+  #search-input {
+    flex: 1;
+    border: none;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    outline: none;
+    color: var(--color-slate-800);
+  }
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--color-slate-400);
+    cursor: pointer;
+    padding: 0 0.5rem;
+  }
+  .close-btn:hover {
+    color: var(--color-danger);
+  }
+  .search-results {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 0;
+  }
+  .search-initial-state {
+    padding: 3rem;
+    text-align: center;
+    color: var(--color-slate-400);
+    font-style: italic;
+  }
+  /* Będzie wstrzykiwane z JS */
+  :global(.search-result-item) {
+    display: block;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-slate-100);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s;
+  }
+  :global(.search-result-item:hover) {
+    background-color: var(--color-slate-50);
+  }
+  :global(.search-result-title) {
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+  }
+  :global(.search-result-meta) {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+  }
+</style>
+
+<script>
+  // Logika Wyszukiwania
+  let searchIndex = [];
+  let isLoaded = false;
+  
+  const modal = document.getElementById('search-modal');
+  const input = document.getElementById('search-input');
+  const resultsDiv = document.getElementById('search-results');
+  const closeBtn = document.getElementById('close-search');
+
+  // Funkcja pokazująca Modal, uruchamiana z Navigation.astro
+  window.openSearchModal = async () => {
+    modal.classList.remove('hidden');
+    input.focus();
+
+    if (!isLoaded) {
+      try {
+        const response = await fetch('/api/search.json');
+        searchIndex = await response.json();
+        isLoaded = true;
+      } catch (e) {
+        console.error("Błąd ładowania silnika:", e);
+      }
+    }
+  };
+
+  // Zamykanie
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  // Zamykanie po kliknięciu w zamazane tło
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.add('hidden');
+  });
+  
+  // Zamykanie na ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') modal.classList.add('hidden');
+  });
+
+  // Wyszukiwanie żywo
+  input.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase().trim();
+    if(q.length < 2) {
+      resultsDiv.innerHTML = '<div class="search-initial-state">Wpisz przynajmniej 2 litery...</div>';
+      return;
+    }
+
+    const matches = searchIndex.filter(post => 
+      post.title.toLowerCase().includes(q)
+    ).slice(0, 15); // max 15 wyników
+
+    if(matches.length === 0) {
+      resultsDiv.innerHTML = '<div class="search-initial-state">Brak dopasowań do szukanej frazy.</div>';
+      return;
+    }
+
+    resultsDiv.innerHTML = matches.map(post => `
+      <a href="${post.slug}" class="search-result-item">
+        <div class="search-result-title">${post.title}</div>
+        <div class="search-result-meta">${post.date} &bull; ${post.category}</div>
+      </a>
+    `).join('');
+  });
+</script>

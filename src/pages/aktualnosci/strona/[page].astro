@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Sidebar from '../../../components/Sidebar.astro';
+import PostCard from '../../../components/PostCard.astro';
+
+export async function getStaticPaths({ paginate }) {
+  const allNews = await getCollection('news');
+  // Sort from newest to oldest
+  const sortedNews = allNews.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+  
+  // Here we ignore pinned rules and just paginate everything. Or we can filter pinned out if we only want regular archive.
+  // Actually, standard behavior is to just list all news in archive, ordered by date.
+  
+  // Return a paginated collection of paths, with 10 items per page
+  // We use page size 10 to match the main page.
+  return paginate(sortedNews, { pageSize: 10 });
+}
+
+// All paginated data is passed on the "page" prop
+const { page } = Astro.props;
+---
+
+<Layout title={`Aktualności - Strona ${page.currentPage}`}>
+  <div class="container main-layout">
+    
+    <section class="content-area">
+      <div class="archive-header">
+        <h2 class="section-title">Archiwum wiadomości <span class="page-badge">Strona {page.currentPage} z {page.lastPage}</span></h2>
+      </div>
+
+      <div class="news-grid">
+        {page.data.map(post => {
+          const coverUrl = post.data.coverImage ? post.data.coverImage.src : undefined;
+          const dateStr = new Date(post.data.date).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+          return (
+            <PostCard 
+              title={post.data.title} date={dateStr} author={post.data.author} category={post.data.categoryName}
+              imageUrl={coverUrl} url={`/${post.data.category}/${post.id || post.slug}`}
+            />
+          )
+        })}
+      </div>
+
+      <div class="pagination-controls">
+        {page.url.prev ? (
+          <a href={page.url.prev === '/aktualnosci/strona/1' ? '/' : page.url.prev} class="btn btn-outline">&larr; Nowsze wpisy</a>
+        ) : (
+          <span class="btn btn-outline disabled">&larr; Nowsze wpisy</span>
+        )}
+        
+        <span class="page-indicator">Strona {page.currentPage}</span>
+        
+        {page.url.next ? (
+          <a href={page.url.next} class="btn btn-outline">Starsze wpisy &rarr;</a>
+        ) : (
+          <span class="btn btn-outline disabled">Starsze wpisy &rarr;</span>
+        )}
+      </div>
+    </section>
+    
+    <Sidebar />
+
+  </div>
+</Layout>
+
+<style>
+  .archive-header {
+    margin-bottom: 2rem;
+  }
+  .section-title {
+    font-size: 1.8rem;
+    color: var(--color-slate-800);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 2px solid var(--color-slate-200);
+    padding-bottom: 1rem;
+  }
+  .page-badge {
+    font-size: 0.9rem;
+    background: var(--color-primary);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-slate-200);
+  }
+  .page-indicator {
+    font-weight: 600;
+    color: var(--color-slate-600);
+  }
+  .btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    background: transparent;
+    color: var(--color-slate-400);
+    border-color: var(--color-slate-300);
+  }
+</style>
