@@ -58,6 +58,7 @@ try {
                 <div class="warning-extracted">
                   <div class="warning-threat">{w.threat}</div>
                   {w.validity && <div class="warning-validity">{w.validity}</div>}
+                  {w.area && <div class="warning-area">Dotyczy: {w.area}</div>}
                 </div>
               ))
             ) : (
